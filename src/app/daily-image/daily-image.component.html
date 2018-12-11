@@ -1,6 +1,28 @@
 <section>
-  <input type="date" name="imageDate" id="image-date" min="{{minimumDate}}" max="{{maximumDate}}" >
+  <h3>Astronomy Picture of the Day for {{ imageDate }}</h3>
 
-  <img [src]="nasaImageData.url" alt="nasa Image">
+  <div>
+    <input
+      type="date"
+      name="todaysDate"
+      id="image-date"
+      min="{{minimumDate}}"
+      max="{{maximumDate}}"
+      [value]="todaysDate"
+      (change)="getImage($event)"
+    />
 
+    <img [src]="nasaImageData?.url" alt="nasa Image" />
+  </div>
+  <div>
+    <div>
+      <label>Title:</label>
+      <p>{{ nasaImageData?.title }}</p>
+    </div>
+    <div>
+      <label>Description:</label>
+      <p>{{ nasaImageData?.explanation }}</p>
+    </div>
+    <div><a>View HD Image</a></div>
+  </div>
 </section>

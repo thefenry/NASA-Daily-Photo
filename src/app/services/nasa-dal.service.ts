@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { NASAData } from '../models/nasa-data';
 
 @Injectable({
@@ -11,9 +11,16 @@ export class NasaDalService {
   /**
    * GetNASAImage
    */
-  public GetNASAImage() {
-    const nasaEndpoint = 'https://api.nasa.gov/planetary/apod?api_key=DKase8DlK9V0JPjUGVNLbBZbTBNiNU2oUTwxE0yS';
+  public GetNASAImage(date: string) {
+    const nasaEndpoint = 'https://api.nasa.gov/planetary/apod';
+    const apiKey = 'DKase8DlK9V0JPjUGVNLbBZbTBNiNU2oUTwxE0yS';
 
-    return this.http.get<NASAData>(nasaEndpoint);
+    let params = new HttpParams();
+
+    // Begin assigning parameters
+    params = params.append('api_key', apiKey);
+    params = params.append('date', date);
+
+    return this.http.get<NASAData>(nasaEndpoint, {params: params});
   }
 }

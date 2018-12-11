@@ -10,28 +10,79 @@ import { NASAData } from '../models/nasa-data';
 export class DailyImageComponent implements OnInit {
   public minimumDate: string;
   public maximumDate: string;
+  public todaysDate: string;
+
   public nasaImageData: NASAData;
+  public imageDate: string;
 
   constructor(private nasaDataService: NasaDalService) {}
 
   ngOnInit() {
-    this.minimumDate = '2018-24-11';
-    this.maximumDate = '2018-12-11';
+    this.setMaximumDate();
+    this.setMinimumDate();
 
-    this.showNASAImage();
+    this.setTodaysDate();
+
+    this.showNASAImage(this.todaysDate);
   }
 
-  private showNASAImage(): void {
+  /**
+    * getImage
+    newValue:any */
+  public getImage(newValue: any) {
+    this.showNASAImage(newValue.target.value);
+  }
+
+  private setTodaysDate(): void {
+    const todaysDate = new Date();
+    const month = todaysDate.getMonth() + 1;
+    const monthString = month < 10 ? '0' + month : month;
+    const day = todaysDate.getDate();
+    const dayString = day < 10 ? '0' + day : day;
+
+    this.todaysDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+  }
+
+  private setMinimumDate(): void {
+    const todaysDate = new Date();
+    todaysDate.setMonth(todaysDate.getMonth() - 2);
+    const month = todaysDate.getMonth() + 1;
+    const monthString = month < 10 ? '0' + month : month;
+    const day = todaysDate.getDate();
+    const dayString = day < 10 ? '0' + day : day;
+
+    this.minimumDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+  }
+
+  private setMaximumDate(): void {
+    const todaysDate = new Date();
+    const month = todaysDate.getMonth() + 1;
+    const monthString = month < 10 ? '0' + month : month;
+    const day = todaysDate.getDate();
+    const dayString = day < 10 ? '0' + day : day;
+
+    this.maximumDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+  }
+
+  private showNASAImage(date: string): void {
     this.nasaDataService
-      .GetNASAImage()
+      .GetNASAImage(date)
       .subscribe((data: NASAData) => this.setNASAImageData(data), error => this.HandleRequestError(error));
   }
 
   private setNASAImageData(data: NASAData): void {
     this.nasaImageData = data;
+    this.setImageDate(data.date);
   }
 
-  HandleRequestError(error: any): void {
+  private setImageDate(imageDate: string) {
+    const currentDate = new Date(imageDate);
+
+    const monthString = currentDate.toLocaleString('en-us', { month: 'long' });
+    this.imageDate = currentDate.getFullYear() + ' ' + monthString + ' ' + currentDate.getDate();
+  }
+
+  private HandleRequestError(error: any): void {
     alert('Something when wrong. Please refresh the page and try again.');
     console.log(error);
   }
