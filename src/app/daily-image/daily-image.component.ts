@@ -22,7 +22,6 @@ export class DailyImageComponent implements OnInit {
     this.setMinimumDate();
 
     this.setTodaysDate();
-
     this.showNASAImage(this.todaysDate);
   }
 
@@ -34,34 +33,15 @@ export class DailyImageComponent implements OnInit {
   }
 
   private setTodaysDate(): void {
-    const todaysDate = new Date();
-    const month = todaysDate.getMonth() + 1;
-    const monthString = month < 10 ? '0' + month : month;
-    const day = todaysDate.getDate();
-    const dayString = day < 10 ? '0' + day : day;
-
-    this.todaysDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+    this.todaysDate = this.getStringDate();
   }
 
   private setMinimumDate(): void {
-    const todaysDate = new Date();
-    todaysDate.setMonth(todaysDate.getMonth() - 2);
-    const month = todaysDate.getMonth() + 1;
-    const monthString = month < 10 ? '0' + month : month;
-    const day = todaysDate.getDate();
-    const dayString = day < 10 ? '0' + day : day;
-
-    this.minimumDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+    this.minimumDate = this.getStringDate(-2);
   }
 
   private setMaximumDate(): void {
-    const todaysDate = new Date();
-    const month = todaysDate.getMonth() + 1;
-    const monthString = month < 10 ? '0' + month : month;
-    const day = todaysDate.getDate();
-    const dayString = day < 10 ? '0' + day : day;
-
-    this.maximumDate = todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
+    this.maximumDate = this.getStringDate();
   }
 
   private showNASAImage(date: string): void {
@@ -80,6 +60,19 @@ export class DailyImageComponent implements OnInit {
 
     const monthString = currentDate.toLocaleString('en-us', { month: 'long' });
     this.imageDate = currentDate.getFullYear() + ' ' + monthString + ' ' + currentDate.getDate();
+  }
+
+  private getStringDate(monthDifference = 0): string {
+    const todaysDate = new Date();
+
+    todaysDate.setMonth(todaysDate.getMonth() + monthDifference);
+
+    const month = todaysDate.getMonth() + 1;
+    const monthString = month < 10 ? '0' + month : month;
+    const day = todaysDate.getDate();
+    const dayString = day < 10 ? '0' + day : day;
+
+    return todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
   }
 
   private HandleRequestError(error: any): void {
