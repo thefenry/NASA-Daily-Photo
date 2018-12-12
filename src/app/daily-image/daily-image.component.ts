@@ -9,13 +9,12 @@ import { CacheService } from '../services/cache.service';
   styleUrls: ['./daily-image.component.less']
 })
 export class DailyImageComponent implements OnInit {
+  public showHDImage = false;
+
   public minimumDate: string;
   public maximumDate: string;
   public todaysDate: string;
-  public showHDImage = false;
-
   public nasaImageData: NASAData;
-  public imageDate: string;
 
   constructor(private nasaDataService: NasaDalService, private cacheService: CacheService) {}
 
@@ -58,14 +57,6 @@ export class DailyImageComponent implements OnInit {
 
   private setNASAImageData(data: NASAData): void {
     this.nasaImageData = data;
-    this.setImageDate(data.date);
-  }
-
-  private setImageDate(imageDate: string) {
-    const currentDate = new Date(imageDate);
-
-    const monthString = currentDate.toLocaleString('en-us', { month: 'long' });
-    this.imageDate = currentDate.getFullYear() + ' ' + monthString + ' ' + currentDate.getDate();
   }
 
   private getStringDate(monthDifference = 0): string {

@@ -1,5 +1,5 @@
 <section class="nasa-image-section">
-  <h3>Astronomy Picture of the Day for {{ imageDate }}</h3>
+  <h3>Astronomy Picture of the Day for {{ nasaImageData?.date | date: 'yyyy MMMM dd' }}</h3>
 
   <div class="container">
     <div class="image-selector-group flex-item">
@@ -16,10 +16,7 @@
         />
       </div>
       <div>
-        <img
-          [src]="showHDImage ? nasaImageData?.hdurl : nasaImageData?.url"
-          alt="nasa Image"
-        />
+        <img *ngIf="nasaImageData" [src]="showHDImage ? nasaImageData.hdurl : nasaImageData.url" alt="nasa Image" />
       </div>
     </div>
     <div class="image-information-group flex-item">
@@ -31,11 +28,7 @@
         <label>Description:</label>
         <p>{{ nasaImageData?.explanation }}</p>
       </div>
-      <div>
-        <a (click)="toggleImageQuality()" class="image-quality-link"
-          >View HD Image</a
-        >
-      </div>
+      <div><a (click)="toggleImageQuality()" class="image-quality-link">View HD Image</a></div>
     </div>
   </div>
 </section>
