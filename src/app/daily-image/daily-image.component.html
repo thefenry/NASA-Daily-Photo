@@ -1,28 +1,30 @@
-<section>
+<section class="nasa-image-section">
   <h3>Astronomy Picture of the Day for {{ imageDate }}</h3>
 
-  <div>
-    <input
-      type="date"
-      name="todaysDate"
-      id="image-date"
-      min="{{minimumDate}}"
-      max="{{maximumDate}}"
-      [value]="todaysDate"
-      (change)="getImage($event)"
-    />
+  <div class="container">
+    <div class="image-selector-group flex-item">
+      <input
+        type="date"
+        name="todaysDate"
+        id="image-date"
+        min="{{minimumDate}}"
+        max="{{maximumDate}}"
+        [value]="todaysDate"
+        (change)="getImage($event)"
+      />
 
-    <img [src]="nasaImageData?.url" alt="nasa Image" />
-  </div>
-  <div>
-    <div>
-      <label>Title:</label>
-      <p>{{ nasaImageData?.title }}</p>
+      <img [src]="nasaImageData?.url" alt="nasa Image" />
     </div>
-    <div>
-      <label>Description:</label>
-      <p>{{ nasaImageData?.explanation }}</p>
+    <div class="image-information-group flex-item">
+      <div class="information-group">
+        <label>Title:</label>
+        <p>{{ nasaImageData?.title }}</p>
+      </div>
+      <div class="information-group">
+        <label>Description:</label>
+        <p>{{ nasaImageData?.explanation }}</p>
+      </div>
+      <div><a>View HD Image</a></div>
     </div>
-    <div><a>View HD Image</a></div>
   </div>
 </section>
