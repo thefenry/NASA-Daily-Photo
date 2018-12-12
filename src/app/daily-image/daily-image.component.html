@@ -3,17 +3,23 @@
 
   <div class="container">
     <div class="image-selector-group flex-item">
-      <input
-        type="date"
-        name="todaysDate"
-        id="image-date"
-        min="{{minimumDate}}"
-        max="{{maximumDate}}"
-        [value]="todaysDate"
-        (change)="getImage($event)"
-      />
-
-      <img [src]="showHDImage ? nasaImageData?.hdurl : nasaImageData?.url" alt="nasa Image" />
+      <div>
+        <input
+          type="date"
+          name="todaysDate"
+          id="image-date"
+          min="{{minimumDate}}"
+          max="{{maximumDate}}"
+          [value]="todaysDate"
+          (change)="getImage($event)"
+        />
+      </div>
+      <div>
+        <img
+          [src]="showHDImage ? nasaImageData?.hdurl : nasaImageData?.url"
+          alt="nasa Image"
+        />
+      </div>
     </div>
     <div class="image-information-group flex-item">
       <div class="information-group">
@@ -25,7 +31,9 @@
         <p>{{ nasaImageData?.explanation }}</p>
       </div>
       <div>
-        <a (click)="toggleImageQuality()" class="image-quality-link">View HD Image</a>
+        <a (click)="toggleImageQuality()" class="image-quality-link"
+          >View HD Image</a
+        >
       </div>
     </div>
   </div>

@@ -2,7 +2,8 @@
   padding: 20px;
 
   h3 {
-    padding: 0 35px;
+    margin: 0 auto;
+    text-align: center;
   }
 
   .image-selector-group {
@@ -11,14 +12,15 @@
     }
 
     img {
-      width: 45vw;
+      width: 35vw;
       margin: 10px 0;
-      height: 100vh;
+      height: 65vh;
     }
   }
   .image-selector-group,
   .image-information-group {
     padding: 30px;
+    max-width: 35vw;
   }
 
   .information-group {
@@ -34,5 +36,28 @@
 
   .image-quality-link:hover {
     cursor: pointer;
+  }
+}
+
+/* For mobile phones: */
+@media only screen and (max-width: 768px) {
+  .nasa-image-section {
+    .image-selector-group {
+      input {
+        width: 50vw;
+      }
+
+      img {
+        width: 85vw;
+        margin: 10px 0;
+        height: 65vh;
+      }
+    }
+
+    .image-selector-group,
+    .image-information-group {
+      padding: 5px;
+      max-width: 100vw;
+    }
   }
 }
