@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NasaDalService } from '../services/nasa-dal.service';
+import { DatePipe } from '@angular/common';
 import { NASAData } from '../models/nasa-data';
+import { NasaDalService } from '../services/nasa-dal.service';
 import { CacheService } from '../services/cache.service';
+import { DateService } from '../services/date.service';
 
 @Component({
   selector: 'app-daily-image',
@@ -16,19 +18,20 @@ export class DailyImageComponent implements OnInit {
   public todaysDate: string;
   public nasaImageData: NASAData;
 
-  constructor(private nasaDataService: NasaDalService, private cacheService: CacheService) {}
+  constructor(
+    private nasaDataService: NasaDalService,
+    private cacheService: CacheService,
+    private datepipe: DatePipe,
+    private dateService: DateService
+  ) {}
 
   ngOnInit() {
-    this.setMaximumDate();
+    this.setBasicDates();
     this.setMinimumDate();
 
-    this.setTodaysDate();
     this.showNASAImage(this.todaysDate);
   }
 
-  /**
-    * getImage
-    newValue:any */
   public getImage(newValue: any) {
     this.showNASAImage(newValue.target.value);
   }
@@ -37,41 +40,29 @@ export class DailyImageComponent implements OnInit {
     this.showHDImage = !this.showHDImage;
   }
 
-  private setTodaysDate(): void {
-    this.todaysDate = this.getStringDate();
+  private setBasicDates(): void {
+    const date = new Date();
+    this.todaysDate = this.datepipe.transform(date, 'yyyy-MM-dd');
+    this.maximumDate = this.datepipe.transform(date, 'yyyy-MM-dd');
   }
 
   private setMinimumDate(): void {
-    this.minimumDate = this.getStringDate(-2);
-  }
-
-  private setMaximumDate(): void {
-    this.maximumDate = this.getStringDate();
+    this.minimumDate = this.dateService.getStringDate(-2);
   }
 
   private showNASAImage(date: string): void {
     this.cacheService
       .get(date, this.nasaDataService.GetNASAImage(date))
-      .subscribe((data: NASAData) => this.setNASAImageData(data), error => this.HandleRequestError(error));
+      .subscribe(
+        (data: NASAData) => this.setNASAData(data),
+        error => this.HandleRequestError(error)
+      );
   }
 
-  private setNASAImageData(data: NASAData): void {
+  private setNASAData(data: NASAData): void {
     this.nasaImageData = data;
   }
-
-  private getStringDate(monthDifference = 0): string {
-    const todaysDate = new Date();
-
-    todaysDate.setMonth(todaysDate.getMonth() + monthDifference);
-
-    const month = todaysDate.getMonth() + 1;
-    const monthString = month < 10 ? '0' + month : month;
-    const day = todaysDate.getDate();
-    const dayString = day < 10 ? '0' + day : day;
-
-    return todaysDate.getFullYear() + '-' + monthString + '-' + dayString;
-  }
-
+  
   private HandleRequestError(error: any): void {
     alert('Something when wrong. Please refresh the page and try again.');
     console.log(error);
