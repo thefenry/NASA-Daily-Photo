@@ -12,6 +12,7 @@ import { DateService } from '../services/date.service';
 })
 export class DailyImageComponent implements OnInit {
   public showHDImage = false;
+  public dateOutOfRange = false;
 
   public minimumDate: string;
   public maximumDate: string;
@@ -33,7 +34,17 @@ export class DailyImageComponent implements OnInit {
   }
 
   public getImage(newValue: any) {
-    this.showNASAImage(newValue.target.value);
+    const newDateString = newValue.target.value;
+    const newDate = new Date(newDateString);
+    if (
+      newDate >= new Date(this.minimumDate) &&
+      new Date(this.maximumDate) >= newDate
+    ) {
+      this.showNASAImage(newDateString);
+      this.dateOutOfRange = false;
+    } else {
+      this.dateOutOfRange = true;
+    }
   }
 
   public toggleImageQuality(): void {
@@ -62,7 +73,7 @@ export class DailyImageComponent implements OnInit {
   private setNASAData(data: NASAData): void {
     this.nasaImageData = data;
   }
-  
+
   private HandleRequestError(error: any): void {
     alert('Something when wrong. Please refresh the page and try again.');
     console.log(error);
