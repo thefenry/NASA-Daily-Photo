@@ -1,33 +1,29 @@
 <section class="nasa-image-section">
-  <h3>
-    Astronomy Picture of the Day for
-    {{ nasaImageData?.date | date: 'yyyy MMMM dd' }}
-  </h3>
+  <h3>Astronomy Picture of the Day for {{ nasaImageData?.date | date: 'yyyy MMMM dd' }}</h3>
 
   <div class="container">
     <div class="image-selector-group flex-item">
       <div>
-        <input
-          type="date"
-          name="todaysDate"
-          id="image-date"
-          min="{{minimumDate}}"
-          max="{{maximumDate}}"
-          [value]="todaysDate"
-          (change)="getImage($event)"
-          aria-label="Date Selection"
-        />
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="dp"
+            placeholder="Image Date"
+            [formControl]="todaysDate"
+            (dateChange)="getImage($event)"
+            [min]="minimumDate"
+            [max]="maximumDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp></mat-datepicker>
+        </mat-form-field>
+        
         <div *ngIf="dateOutOfRange" class="error-message">
-          I'm sorry. Your dates must be between {{ minimumDate }} and
-          {{ maximumDate }}
+          I'm sorry. Your dates must be between {{ minimumDate }} and {{ maximumDate }}
         </div>
       </div>
       <div>
-        <img
-          *ngIf="nasaImageData"
-          [src]="showHDImage ? nasaImageData.hdurl : nasaImageData.url"
-          alt="nasa Image"
-        />
+        <img *ngIf="nasaImageData" [src]="showHDImage ? nasaImageData.hdurl : nasaImageData.url" alt="nasa Image" />
       </div>
     </div>
     <div class="image-information-group flex-item">
@@ -39,11 +35,7 @@
         <label>Description:</label>
         <p>{{ nasaImageData?.explanation }}</p>
       </div>
-      <div>
-        <a (click)="toggleImageQuality()" class="image-quality-link"
-          >View HD Image</a
-        >
-      </div>
+      <div><a (click)="toggleImageQuality()" class="image-quality-link">View HD Image</a></div>
     </div>
   </div>
 </section>
